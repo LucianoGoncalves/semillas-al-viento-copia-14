@@ -1,0 +1,38 @@
+import parcelas.*
+import plantas.*
+describe "Test de parcelas"{
+	const  parcela1 = new ParcelaEcologica(ancho = 10, largo = 1, horasDeSolAlDia = 10)
+	const soja1 = new Soja(alturaEnMetros = 1.5, anioDeObtencion = 2009)
+	const soja2 = new Soja(alturaEnMetros = 1.6, anioDeObtencion = 2009)
+	const soja3 = new Soja(alturaEnMetros = 1.7, anioDeObtencion = 2009)
+	const soja4 = new Soja(alturaEnMetros = 1.8, anioDeObtencion = 2009)
+	const soja5 = new Soja(alturaEnMetros = 1.9, anioDeObtencion = 2009)
+	const soja6 = new Soja(alturaEnMetros = 2, anioDeObtencion = 2009)
+	
+	fixture{
+		parcela1.plantar(soja1)
+		parcela1.plantar(soja2)
+		parcela1.plantar(soja3)
+		parcela1.plantar(soja4)
+		parcela1.plantar(soja5)
+	}
+	
+	test "test parcela1" {
+
+		assert.equals(10,parcela1.superficieDeLaParcela())
+		assert.equals(5,parcela1.cantidaMaximaDePlantasQueTolera())
+	}
+	
+	test "test parcela1 con 5 sojas de más de 1 metro" {
+
+		assert.notThat(parcela1.tieneComplicaciones())
+		
+	}
+	
+	test "test parcela1 con 6 sojas de más de 1 metro da error" {
+
+		parcela1.plantar(soja6)
+		assert.
+	}
+	
+}
