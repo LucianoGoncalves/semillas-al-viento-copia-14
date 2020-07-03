@@ -1,9 +1,10 @@
+import parcelas.*
+
 class Planta {
 
 	var property anioDeObtencion = 0
 	var property alturaEnMetros = 0
 
-//	var property cantidadDeSolQueSoporta = 7
 	method cantidadDeSolQueTolera()
 
 	method esFuerte() {
@@ -19,14 +20,10 @@ class Planta {
 	method espacioQueOcupa()
 
 	method toleraCantidadDeHoras(numeroDeHoras) {
-		return toleranciaDeSolAlDia.cantidadDeSolQueSoporta() > numeroDeHoras
+		return self.cantidadDeSolQueTolera() > numeroDeHoras
 	}
 
-}
-
-object toleranciaDeSolAlDia {
-
-	var property cantidadDeSolQueSoporta = 7
+	method esIdealEn(unaParcela)
 
 }
 
@@ -40,15 +37,25 @@ class Menta inherits Planta {
 		return alturaEnMetros + 1
 	}
 
+	override method cantidadDeSolQueTolera() {
+		return toleranciaDeSolAlDia.cantidadDeSolQueSoporta()
+	}
+
+	override method esIdealEn(unaParcela) {
+		return unaParcela.superficieDeLaParcela() > 6
+	}
+
+}
+
+object toleranciaDeSolAlDia {
+
+	var property cantidadDeSolQueSoporta = 7
+
 }
 
 class Soja inherits Planta {
 
-	override method toleraCantidadDeHoras(numeroDeHoras) {
-		return self.toleranciaDeSolDeLaPlanta() > numeroDeHoras
-	}
-
-	method toleranciaDeSolDeLaPlanta() {
+	override method cantidadDeSolQueTolera() {
 		return if (alturaEnMetros < 0.5) {
 			6
 		} else if (alturaEnMetros.between(0.5, 1)) {
@@ -66,6 +73,10 @@ class Soja inherits Planta {
 		return alturaEnMetros / 2
 	}
 
+	override method esIdealEn(unaParcela) {
+		return unaParcela.horasDeSolAlDia() == self.cantidadDeSolQueTolera()
+	}
+
 }
 
 class Quinoa inherits Soja {
@@ -76,7 +87,7 @@ class Quinoa inherits Soja {
 		return espacio
 	}
 
-	override method toleranciaDeSolDeLaPlanta() {
+	override method cantidadDeSolQueTolera() {
 		return if (alturaEnMetros < 0.3) {
 			10
 		} else {
@@ -88,12 +99,20 @@ class Quinoa inherits Soja {
 		return anioDeObtencion < 2005
 	}
 
+	override method esIdealEn(unaParcela) {
+		return unaParcela.plantasQueTiene().all({ planta => planta.alturaEnMetros() <= 1.5 })
+	}
+
 }
 
 class SojaTransgenica inherits Soja {
 
 	override method daNuevasSemillas() {
 		return false
+	}
+
+	override method esIdealEn(unaParcela) {
+		return unaParcela.cantidaMaximaDePlantasQueTolera() == 1
 	}
 
 }
